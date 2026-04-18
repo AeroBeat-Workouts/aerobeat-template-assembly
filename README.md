@@ -30,7 +30,7 @@ An **Assembly** is the "Game Client." It is the top-level Godot project that tie
     python setup_dev.py
     ```
 3.  **Open in Godot:**
-    Import the `project.godot` file into Godot 4.x.
+    Import the `project.godot` file into **Godot 4.6.2 stable standard**.
 
 ## 🧪 Testing & CI/CD
 
