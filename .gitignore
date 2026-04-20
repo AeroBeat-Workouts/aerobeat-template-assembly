@@ -15,5 +15,7 @@ mono_crash.*.json
 .DS_Store
 Thumbs.db
 
-# AeroBeat Dependencies (Managed by setup_dev.py)
-addons/
+# GodotEnv-generated assembly dependencies
+addons/*
+!addons/.editorconfig
+.addons/

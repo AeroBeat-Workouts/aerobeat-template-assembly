@@ -2,47 +2,81 @@
 
 This is the official template for creating an **Assembly** repository within the AeroBeat ecosystem.
 
-An **Assembly** is the "Game Client." It is the top-level Godot project that ties together the Core, Input Drivers, UI Shells, and Feature modules into a playable executable.
+An **Assembly** is the top-level Godot project that composes released AeroBeat addons into a runnable game client.
 
 ## 📋 Repository Details
 
 *   **Type:** Assembly (Game Client)
 *   **License:** **GNU GPLv3** (Strict Copyleft)
-*   **Dependencies:**
+*   **Primary dependency contract:** `addons.jsonc` at repo root
+*   **Typical dependencies:**
     *   `aerobeat-core` (Required)
-    *   `aerobeat-ui-core` (Required)
-    *   `aerobeat-tool-*` (Services / As needed)
+    *   `aerobeat-ui-core` (Common baseline for UI-driven assemblies)
+    *   `aerobeat-tool-*` (As needed)
     *   `aerobeat-input-*` (As needed)
     *   `aerobeat-ui-shell-*` (As needed)
-    *   `aerobeat-ui-kit-*` (As needed / Transitive)
+    *   `aerobeat-ui-kit-*` (As needed / often transitive)
     *   `aerobeat-feature-*` (As needed)
-    *   `aerobeat-asset-*` (Internal Assets / As needed)
+    *   `aerobeat-asset-*` (As needed)
 
-## 🚀 Getting Started
+## GodotEnv assembly flow
 
-1.  **Clone your new repo:**
-    ```bash
-    git clone https://github.com/YourOrg/aerobeat-assembly-custom.git
-    ```
-2.  **Run Setup:**
-    Initialize the environment and download dependencies.
-    ```bash
-    python setup_dev.py
-    ```
-3.  **Open in Godot:**
-    Import the `project.godot` file into **Godot 4.6.2 stable standard**.
+Assembly repos use a **root** `addons.jsonc` manifest instead of the package-repo `.testbed/addons.jsonc` convention.
 
-## 🧪 Testing & CI/CD
+- Canonical runtime/dev manifest: `addons.jsonc`
+- Installed addons: `addons/`
+- GodotEnv cache: `.addons/`
+- Repo-local tests: `test/`
 
-This template comes pre-configured with **GUT (Godot Unit Test)** workflows.
+The repo root is the actual product project and the canonical place to restore dependencies, open the editor, and run validation.
 
-*   **Local Testing:** Run tests via the "GUT" panel in the Godot Editor.
-*   **CI/CD:** A GitHub Action (`.github/workflows/gut_ci.yml`) runs automatically on every push to `main`.
-*   **Requirement:** 100% Code Coverage is enforced.
+### Restore dependencies
+
+From the repo root:
+
+```bash
+godotenv addons install
+```
+
+That restores the template's baseline assembly contract (`aerobeat-core`, `aerobeat-ui-core`, and GUT) into `addons/`.
+
+### Open the assembly
+
+From the repo root:
+
+```bash
+godot --editor --path .
+```
+
+### Import smoke check
+
+From the repo root:
+
+```bash
+godot --headless --path . --import
+```
+
+### Run unit tests
+
+From the repo root:
+
+```bash
+godot --headless --path . --script addons/gut/gut_cmdln.gd \
+  -gdir=res://test \
+  -ginclude_subdirs \
+  -gexit
+```
+
+## Validation notes
+
+- `addons.jsonc` is the committed assembly dependency contract.
+- The template baseline pins `aerobeat-core@v0.1.0`, `aerobeat-ui-core@v0.1.1`, and GUT `main`.
+- `addons/` is a generated install target and must not be committed.
+- Downstream assemblies should replace or extend the baseline manifest entries with the concrete input/UI/feature/asset contracts they actually ship.
 
 ## 📂 Structure
 
-*   `addons/` - Submodules (Core, UI, Input). Managed by `setup_dev.py`.
-*   `src/` - Application-specific logic (Main Loop, Scene Switching).
-*   `test/` - Unit tests mirroring the `src/` structure.
-*   `assets/` - Local assets (Splash screens, icons).
+*   `addons.jsonc` - Root GodotEnv assembly manifest.
+*   `project.godot` - The runnable product project.
+*   `test/` - Repo-local GUT tests for assembly-specific behavior.
+*   `addons/` - Generated dependency install target (ignored).
