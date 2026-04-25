@@ -10,7 +10,7 @@ An **Assembly** is the top-level Godot project that composes released AeroBeat a
 *   **License:** **GNU GPLv3** (Strict Copyleft)
 *   **Primary dependency contract:** `addons.jsonc` at repo root
 *   **Typical dependencies:**
-    *   `aerobeat-core` (Required)
+    *   Lane-specific core repos as needed by the assembly (for example `aerobeat-input-core`, `aerobeat-ui-core`, `aerobeat-feature-core`, or others actually consumed)
     *   `aerobeat-ui-core` (Common baseline for UI-driven assemblies)
     *   `aerobeat-tool-*` (As needed)
     *   `aerobeat-input-*` (As needed)
@@ -38,7 +38,7 @@ From the repo root:
 godotenv addons install
 ```
 
-That restores the template's baseline assembly contract (`aerobeat-core`, `aerobeat-ui-core`, and GUT) into `addons/`.
+That restores the template's current baseline assembly manifest into `addons/`. Canonically, assemblies should describe themselves as composing only the lane/core repos and concrete addons they actually need, not a universal `aerobeat-core` hub.
 
 ### Open the assembly
 
@@ -70,7 +70,8 @@ godot --headless --path . --script addons/gut/gut_cmdln.gd \
 ## Validation notes
 
 - `addons.jsonc` is the committed assembly dependency contract.
-- The template baseline pins `aerobeat-core@v0.1.0`, `aerobeat-ui-core@v0.1.1`, and GUT `main`.
+- The current template baseline still pins the transition-era `aerobeat-core` package key alongside `aerobeat-ui-core` and GUT. Treat that as bootstrap-state drift rather than the canonical lane model.
+- Assembly repos should explicitly call out the concrete lane/core repos they compose instead of implying that every assembly depends on one universal shared core.
 - `addons/` is a generated install target and must not be committed.
 - Downstream assemblies should replace or extend the baseline manifest entries with the concrete input/UI/feature/asset contracts they actually ship.
 
