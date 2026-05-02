@@ -7,4 +7,4 @@ config/features=PackedStringArray("4.6", "Forward Plus")
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/aerobeat-core/plugin.cfg", "res://addons/aerobeat-ui-core/plugin.cfg", "res://addons/gut/plugin.cfg")
+enabled=PackedStringArray("res://addons/aerobeat-input-core/plugin.cfg", "res://addons/gut/plugin.cfg")
