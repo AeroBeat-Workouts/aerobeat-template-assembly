@@ -24,3 +24,7 @@ addons/*
 .dolt/
 *.db
 .beads-credential-key
+
+.claude/
+CLAUDE.md
+AGENTS.md
